@@ -27,7 +27,10 @@ def hello():
 @app.route("/model")
 def prediction():
     model = load_model("model.h5")
-    return model.summary()
+    stringlist = []
+    model.summary(print_fn=lambda x: stringlist.append(x))
+    short_model_summary = "\n".join(stringlist)
+    return stringlist
 
 
 @app.route("/callback", methods=["POST"])
