@@ -9,7 +9,7 @@ from linebot.models import (
     FlexSendMessage,
     ImageMessage,
 )
-# from keras.models import load_model
+from keras.models import load_model
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
