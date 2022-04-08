@@ -9,6 +9,7 @@ from linebot.models import (
     FlexSendMessage,
     ImageMessage,
 )
+from keras.models import load_model
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
@@ -21,6 +22,12 @@ HANDLER = WebhookHandler(LINE_SECRET)
 def hello():
     "hello world"
     return "Hello World!!!!!"
+
+
+@app.route("/model")
+def prediction():
+    model = load_model("model.h5")
+    return model.summary()
 
 
 @app.route("/callback", methods=["POST"])
