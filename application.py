@@ -30,7 +30,7 @@ def prediction():
     stringlist = []
     model.summary(print_fn=lambda x: stringlist.append(x))
     short_model_summary = "\n".join(stringlist)
-    return stringlist
+    return short_model_summary
 
 
 @app.route("/callback", methods=["POST"])
