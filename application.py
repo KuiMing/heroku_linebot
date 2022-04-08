@@ -2,13 +2,6 @@ import os
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import (
-    MessageEvent,
-    TextMessage,
-    TextSendMessage,
-    FlexSendMessage,
-    ImageMessage,
-)
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
@@ -41,3 +34,7 @@ def callback():
         )
         abort(400)
     return "OK"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
