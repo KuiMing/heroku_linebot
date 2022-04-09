@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -10,6 +11,8 @@ from linebot.models import (
     ImageMessage,
 )
 from keras.models import load_model
+import investpy
+import pickle
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
@@ -24,13 +27,29 @@ def hello():
     return "Hello World!!!!!"
 
 
-@app.route("/model")
+@app.route("/predict")
 def prediction():
+    """
+    Prediction
+    """
+    today = datetime.now()
     model = load_model("model.h5")
-    stringlist = []
-    model.summary(print_fn=lambda x: stringlist.append(x))
-    short_model_summary = "\n".join(stringlist)
-    return short_model_summary
+    with open("scaler.pickle", "rb") as f_h:
+        scaler = pickle.load(f_h)
+    f_h.close()
+    data = investpy.get_currency_cross_historical_data(
+        "USD/TWD",
+        from_date=(today - timedelta(weeks=105)).strftime("%d/%m/%Y"),
+        to_date=today.strftime("%d/%m/%Y"),
+    )
+    data.reset_index(inplace=True)
+    data = data.tail(240).Close.values.reshape(-1, 1)
+    data = scaler.transform(data)
+    data = data.reshape((1, 240, 1))
+    # make prediction
+    ans = model.predict(data)
+    ans = scaler.inverse_transform(ans)
+    return float(ans[0][0])
 
 
 @app.route("/callback", methods=["POST"])
