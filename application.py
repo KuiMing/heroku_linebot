@@ -49,7 +49,7 @@ def prediction():
     # make prediction
     ans = model.predict(data)
     ans = scaler.inverse_transform(ans)
-    return float(ans[0][0])
+    return str(ans[0][0])
 
 
 @app.route("/callback", methods=["POST"])
