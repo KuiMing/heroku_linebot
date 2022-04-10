@@ -6,3 +6,4 @@ Jinja2==2.10
 Werkzeug==0.14.1
 line-bot-sdk
 markupsafe==2.0.1
+investpy

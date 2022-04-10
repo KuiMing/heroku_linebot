@@ -1,10 +1,10 @@
 import os
+import json
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
                             FlexSendMessage)
-import json
 import investpy
 
 app = Flask(__name__)
