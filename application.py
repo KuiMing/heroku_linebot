@@ -1,23 +1,26 @@
+"""
+Line Chatbot tutorial
+"""
 import os
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 
-app = Flask(__name__)
+APP = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
 LINE_TOKEN = os.getenv('LINE_TOKEN')
 LINE_BOT = LineBotApi(LINE_TOKEN)
 HANDLER = WebhookHandler(LINE_SECRET)
 
 
-@app.route("/")
-def hello():
+@APP.route("/")
+def hello() -> str:
     "hello world"
     return "Hello World!!!!!"
 
 
-@app.route("/callback", methods=["POST"])
-def callback():
+@APP.route("/callback", methods=["POST"])
+def callback() -> str:
     """
     LINE bot webhook callback
     """
@@ -37,4 +40,4 @@ def callback():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    APP.run(debug=True)
