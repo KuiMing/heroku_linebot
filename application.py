@@ -1,34 +1,23 @@
-import os
+"""
+Line Chatbot tutorial
+"""
 from datetime import datetime, timedelta
-from flask import Flask, request, abort
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import (
-    MessageEvent,
-    TextMessage,
-    TextSendMessage,
-    FlexSendMessage,
-    ImageMessage,
-)
+import pickle
+from flask import Flask
 from keras.models import load_model
 import investpy
-import pickle
 
-app = Flask(__name__)
-LINE_SECRET = os.getenv('LINE_SECRET')
-LINE_TOKEN = os.getenv('LINE_TOKEN')
-LINE_BOT = LineBotApi(LINE_TOKEN)
-HANDLER = WebhookHandler(LINE_SECRET)
+APP = Flask(__name__)
 
 
-@app.route("/")
-def hello():
+@APP.route("/")
+def hello() -> str:
     "hello world"
     return "Hello World!!!!!"
 
 
-@app.route("/predict")
-def prediction():
+@APP.route("/predict")
+def predict() -> str:
     """
     Prediction
     """
@@ -49,24 +38,8 @@ def prediction():
     # make prediction
     ans = model.predict(data)
     ans = scaler.inverse_transform(ans)
-    return str(ans[0][0])
+    return str(round(ans[0][0], 2))
 
 
-@app.route("/callback", methods=["POST"])
-def callback():
-    """
-    LINE bot webhook callback
-    """
-    # get X-Line-Signature header value
-    signature = request.headers["X-Line-Signature"]
-    print(signature)
-    body = request.get_data(as_text=True)
-    print(body)
-    try:
-        HANDLER.handle(body, signature)
-    except InvalidSignatureError:
-        print(
-            "Invalid signature. Please check your channel access token/channel secret."
-        )
-        abort(400)
-    return "OK"
+if __name__ == "__main__":
+    APP.run(debug=True)
