@@ -28,7 +28,7 @@ def hello():
 
 
 @app.route("/predict")
-def prediction():
+def predict():
     """
     Prediction
     """
@@ -49,7 +49,7 @@ def prediction():
     # make prediction
     ans = model.predict(data)
     ans = scaler.inverse_transform(ans)
-    return str(ans[0][0])
+    return str(round(ans[0][0], 2))
 
 
 @app.route("/callback", methods=["POST"])
@@ -73,6 +73,9 @@ def callback():
 
 
 def bubble_currency():
+    """
+    create currency bubble
+    """
     with open("bubble.json", "r") as f_h:
         bubble = json.load(f_h)
     f_h.close()
@@ -83,20 +86,36 @@ def bubble_currency():
     return bubble
 
 
+def bubble_predcition():
+    """
+    create prediction bubble
+    """
+    with open("bubble.json", "r") as f_h:
+        bubble = json.load(f_h)
+    f_h.close()
+    bubble_pred = bubble['contents'][1]
+    predicted_currency = predict()
+    bubble_pred['body']['contents'][1]['contents'][0]['contents'][0]['text'] = \
+        f"{predicted_currency} TWD = 1 USD"
+    bubble_curr = bubble_currency()
+    bubble['contents'][0] = bubble_curr
+    bubble['contents'][1] = bubble_pred
+    return bubble
+
+
 @HANDLER.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     """
     Reply text message
     """
-    with open("bubble.json", "r") as f_h:
-        bubble = json.load(f_h)
-    f_h.close()
+    currency_option = dict(currency=bubble_currency,
+                           prediction=bubble_predcition)
     text = event.message.text.replace(" ", "").lower()
     if text == "github":
         output = "https://github.com/KuiMing/heroku_linebot"
         message = TextSendMessage(text=output)
-    elif text == "currency":
-        bubble = bubble_currency()
+    elif text in currency_option.keys():
+        bubble = currency_option[text]()
         message = FlexSendMessage(alt_text="Report", contents=bubble)
     else:
         output = text
