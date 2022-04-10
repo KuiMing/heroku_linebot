@@ -108,6 +108,7 @@ def handle_message(event):
     """
     Reply text message
     """
+    print(type(event))
     currency_option = dict(currency=bubble_currency,
                            prediction=bubble_predcition)
     text = event.message.text.replace(" ", "").lower()
