@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime, timedelta
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
@@ -8,7 +9,6 @@ from linebot.models import (
     TextMessage,
     TextSendMessage,
     FlexSendMessage,
-    ImageMessage,
 )
 from keras.models import load_model
 import investpy
@@ -70,3 +70,31 @@ def callback():
         )
         abort(400)
     return "OK"
+
+
+@HANDLER.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    """
+    Reply text message
+    """
+    with open("bubble.json", "r") as f_h:
+        bubble = json.load(f_h)
+    f_h.close()
+    text = event.message.text.replace(" ", "").lower()
+    if text == "github":
+        output = "https://github.com/KuiMing/heroku_linebot"
+        message = TextSendMessage(text=output)
+    elif text == "currency":
+        bubble = bubble['contents'][0]
+        recent = investpy.get_currency_cross_recent_data("USD/TWD")
+        bubble['body']['contents'][1]['contents'][0]['contents'][0]['text'] = \
+            f"{round(recent.Close.values[-1], 2)} TWD = 1 USD"
+        message = FlexSendMessage(alt_text="Report", contents=bubble)
+    else:
+        output = text
+        message = TextSendMessage(text=output)
+    LINE_BOT.reply_message(event.reply_token, message)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
