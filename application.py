@@ -1,6 +1,10 @@
+"""
+Line Chatbot tutorial
+"""
 import os
 import json
 from datetime import datetime, timedelta
+import pickle
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -12,22 +16,21 @@ from linebot.models import (
 )
 from keras.models import load_model
 import investpy
-import pickle
 
-app = Flask(__name__)
+APP = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
 LINE_TOKEN = os.getenv('LINE_TOKEN')
 LINE_BOT = LineBotApi(LINE_TOKEN)
 HANDLER = WebhookHandler(LINE_SECRET)
 
 
-@app.route("/")
+@APP.route("/")
 def hello() -> str:
     "hello world"
     return "Hello World!!!!!"
 
 
-@app.route("/predict")
+@APP.route("/predict")
 def predict() -> str:
     """
     Prediction
@@ -52,7 +55,7 @@ def predict() -> str:
     return str(round(ans[0][0], 2))
 
 
-@app.route("/callback", methods=["POST"])
+@APP.route("/callback", methods=["POST"])
 def callback() -> str:
     """
     LINE bot webhook callback
@@ -124,4 +127,4 @@ def handle_message(event: MessageEvent) -> None:
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    APP.run(debug=True)
