@@ -22,13 +22,13 @@ HANDLER = WebhookHandler(LINE_SECRET)
 
 
 @app.route("/")
-def hello():
+def hello() -> str:
     "hello world"
     return "Hello World!!!!!"
 
 
 @app.route("/predict")
-def predict():
+def predict() -> str:
     """
     Prediction
     """
@@ -53,7 +53,7 @@ def predict():
 
 
 @app.route("/callback", methods=["POST"])
-def callback():
+def callback() -> str:
     """
     LINE bot webhook callback
     """
@@ -72,7 +72,7 @@ def callback():
     return "OK"
 
 
-def bubble_currency():
+def bubble_currency() -> dict:
     """
     create currency bubble
     """
@@ -86,7 +86,7 @@ def bubble_currency():
     return bubble
 
 
-def bubble_predcition():
+def bubble_predcition() -> dict:
     """
     create prediction bubble
     """
@@ -104,23 +104,22 @@ def bubble_predcition():
 
 
 @HANDLER.add(MessageEvent, message=TextMessage)
-def handle_message(event):
+def handle_message(event: MessageEvent) -> None:
     """
     Reply text message
     """
-    print(type(event))
     currency_option = dict(currency=bubble_currency,
                            prediction=bubble_predcition)
     text = event.message.text.replace(" ", "").lower()
-    if text == "github":
-        output = "https://github.com/KuiMing/heroku_linebot"
-        message = TextSendMessage(text=output)
-    elif text in currency_option.keys():
+    if text in currency_option.keys():
         bubble = currency_option[text]()
         message = FlexSendMessage(alt_text="Report", contents=bubble)
+        LINE_BOT.reply_message(event.reply_token, message)
+    if text == "github":
+        output = "https://github.com/KuiMing/heroku_linebot"
     else:
         output = text
-        message = TextSendMessage(text=str(type(event)))
+    message = TextSendMessage(text=output)
     LINE_BOT.reply_message(event.reply_token, message)
 
 
