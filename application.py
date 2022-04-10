@@ -52,7 +52,7 @@ def handle_message(event):
         output = "https://github.com/KuiMing/heroku_linebot"
         message = TextSendMessage(text=output)
     elif text == "currency":
-
+        bubble = bubble['contents'][0]
         message = FlexSendMessage(alt_text="Report", contents=bubble)
     else:
         output = text
