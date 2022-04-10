@@ -120,7 +120,7 @@ def handle_message(event):
         message = FlexSendMessage(alt_text="Report", contents=bubble)
     else:
         output = text
-        message = TextSendMessage(text=output)
+        message = TextSendMessage(text=str(type(event)))
     LINE_BOT.reply_message(event.reply_token, message)
 
 
