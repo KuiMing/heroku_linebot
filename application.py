@@ -5,6 +5,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
                             FlexSendMessage)
 import json
+import investpy
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
@@ -53,6 +54,9 @@ def handle_message(event):
         message = TextSendMessage(text=output)
     elif text == "currency":
         bubble = bubble['contents'][0]
+        recent = investpy.get_currency_cross_recent_data("USD/TWD")
+        bubble['body']['contents'][1]['contents'][0]['contents'][0]['text'] = \
+            f"{round(recent.Close.values[-1], 2)} TWD = 1 USD"
         message = FlexSendMessage(alt_text="Report", contents=bubble)
     else:
         output = text
