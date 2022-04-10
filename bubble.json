@@ -7,7 +7,7 @@
             "hero": {
                 "type": "image",
                 "url": "https://i.imgur.com/hbgCxyX.png",
-                "size": "full",
+                "size": "5xl",
                 "aspectMode": "cover",
                 "aspectRatio": "894:795"
             },
@@ -54,7 +54,7 @@
             "hero": {
                 "type": "image",
                 "url": "https://i.imgur.com/vlruUzf.png",
-                "size": "full",
+                "size": "5xl",
                 "aspectMode": "cover",
                 "aspectRatio": "894:795"
             },
