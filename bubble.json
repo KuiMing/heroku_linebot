@@ -1,0 +1,99 @@
+{
+    "type": "carousel",
+    "contents": [
+        {
+            "type": "bubble",
+            "size": "mega",
+            "hero": {
+                "type": "image",
+                "url": "https://i.imgur.com/hbgCxyX.png",
+                "size": "full",
+                "aspectMode": "cover",
+                "aspectRatio": "894:795"
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "目前匯率",
+                        "weight": "bold",
+                        "size": "xxl",
+                        "wrap": true
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "28.91 TWD = 1 USD",
+                                        "wrap": true,
+                                        "color": "#8c8c8c",
+                                        "size": "xxl",
+                                        "flex": 5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "spacing": "sm",
+                "paddingAll": "13px"
+            }
+        },
+        {
+            "type": "bubble",
+            "size": "mega",
+            "hero": {
+                "type": "image",
+                "url": "https://i.imgur.com/vlruUzf.png",
+                "size": "full",
+                "aspectMode": "cover",
+                "aspectRatio": "894:795"
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "預測隔天收盤匯率",
+                        "weight": "bold",
+                        "size": "xxl",
+                        "wrap": true
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "28.78 TWD = 1 USD",
+                                        "wrap": true,
+                                        "color": "#8c8c8c",
+                                        "size": "xxl",
+                                        "flex": 5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "spacing": "sm",
+                "paddingAll": "13px"
+            }
+        }
+    ]
+}
