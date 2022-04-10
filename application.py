@@ -2,11 +2,9 @@ import os
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import (
-    MessageEvent,
-    TextMessage,
-    TextSendMessage,
-)
+from linebot.models import (MessageEvent, TextMessage, TextSendMessage,
+                            FlexSendMessage)
+import json
 
 app = Flask(__name__)
 LINE_SECRET = os.getenv('LINE_SECRET')
@@ -46,12 +44,19 @@ def handle_message(event):
     """
     Reply text message
     """
+    with open("bubble.json", "r") as f_h:
+        bubble = json.load(f_h)
+    f_h.close()
     text = event.message.text.replace(" ", "").lower()
     if text == "github":
         output = "https://github.com/KuiMing/heroku_linebot"
+        message = TextSendMessage(text=output)
+    elif text == "currency":
+
+        message = FlexSendMessage(alt_text="Report", contents=bubble)
     else:
         output = text
-    message = TextSendMessage(text=output)
+        message = TextSendMessage(text=output)
     LINE_BOT.reply_message(event.reply_token, message)
 
 
