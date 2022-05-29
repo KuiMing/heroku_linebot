@@ -4,7 +4,7 @@ Line Chatbot tutorial
 from datetime import datetime, timedelta
 import pickle
 from flask import Flask
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import investpy
 
 APP = Flask(__name__)
